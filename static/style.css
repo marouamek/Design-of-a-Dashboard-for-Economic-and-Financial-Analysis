@@ -620,3 +620,10 @@ canvas {
     grid-template-columns: 1fr; 
   }
 }
+
+.charts-container .card-content canvas,
+.card-content-chart canvas,
+.card .card-content canvas {
+  width: 100%;
+  height: 300px;
+}
