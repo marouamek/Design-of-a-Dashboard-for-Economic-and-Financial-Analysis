@@ -1,0 +1,58 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<script src="/static/script.js" defer></script>
+<!-- Sidebar Navigation Template -->
+<aside id="sidebar" class="sidenav">
+  <!-- Menu de navigation -->
+  <nav class="menu">
+    <!-- Menu top: logo + button -->
+    <div class="menu-top">
+      <button id="toggleSidebar" class="toggle-btn" aria-label="Toggle sidebar">☰</button>
+    </div>
+    <!-- Elements du menu -->
+    <ul class="menu-list">
+      <!-- Lien Page d'accueil -->
+      <li>
+        <a href="{{ url_for('index') }}" class="menu-link {% if request.endpoint == 'index' %}active{% endif %}">
+          <span class="menu-icon material-icons-round ">home</span>
+          <span class="menu-text">Accueil</span>
+        </a>
+      </li>
+      <!-- Lien Page Alimentation -->
+      <li>
+        <a href="{{ url_for('alimentation') }}" class="menu-link {% if request.endpoint == 'alimentation' %}active{% endif %}">
+          <span class="menu-icon material-icons-round">restaurant</span>
+          <span class="menu-text">Alimentation</span>
+        </a>
+      </li>
+      <!-- Lien Page Logement -->
+      <li>
+        <a href="{{ url_for('logement') }}" class="menu-link {% if request.endpoint == 'logement' %}active{% endif %}">
+          <span class="menu-icon material-icons-round">home_work</span>
+          <span class="menu-text">Logement</span>
+        </a>
+      </li>
+      <!-- Lien Page Habillement -->
+      <li>
+        <a href="{{ url_for('sante') }}" class="menu-link {% if request.endpoint == 'sante' %}active{% endif %}">
+          <span class="menu-icon material-icons-round">local_hospital</span>
+          <span class="menu-text">Santé</span>
+        </a>
+      </li>
+      <!-- Lien Page Transport -->
+      <li>
+        <a href="{{ url_for('transport') }}" class="menu-link {% if request.endpoint == 'transport' %}active{% endif %}">
+          <span class="menu-icon material-icons-round">directions_car</span>
+          <span class="menu-text">Transport</span>
+        </a>
+      </li>
+      <!-- Lien Page Export -->
+      <li>
+        <a href="{{ url_for('export_page') }}" class="menu-link {% if request.endpoint == 'export_page' %}active{% endif %}">
+          <span class="menu-icon material-icons-round">file_download</span>
+          <span class="menu-text">Export</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>

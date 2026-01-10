@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+      <link rel="stylesheet" href="/static/style.css"/>
+      <script src="/static/script.js" defer></script>
+      <title>Export des données IPC</title>
+    </head>
+    <body data-page="export">
+      <div class="grid-container">
+        <header class="header">
+          <p>Export des données du tableau de bord</p>
+        </header>
+
+        {% include 'aside.html' %}
+
+        <main class="main">
+               <section class="card" id="card-export">
+            <div class="card-header">
+              <h2>Télécharger les séries utilisées dans le dashboard</h2>
+            </div>
+            <div class="card-content">
+              <p>Choisissez le type de série à exporter (2015‑2024) au format CSV/Excel.</p>
+              <form class='form-export' method="GET" action="{{ url_for('export_csv') }}">
+                <label for="dataset">Série à exporter :</label>
+                <br/>
+                  <select id="dataset" name="dataset" style="margin:8px 0; padding:6px 10px; border-radius:8px; border:1px solid #cbd5e0;">
+                      <option value="ipc_general">
+                          Indice général IPC (2015‑2024)
+                      </option>
+                      <option value="var_general">
+                          Variation annuelle IPC générale (2015‑2024)
+                      </option>
+                      <option value="all_dashboard">
+                          Toutes les données détaillées du dashboard (année,groupe, sous-groupe, IPC, variation)
+                      </option>
+                  </select>
+                <br/>
+                  <label for="format">Format :</label><br>
+                  <select id="format" name="format" style="margin:8px 0; padding:6px 10px; border-radius:8px; border:1px solid #cbd5e0;">
+                      <option value="csv">CSV</option>
+                      <option value="xlsx">Excel (.xlsx)</option>
+                  </select>
+                  <br>
+                <button type="submit" class="refresh-btn">Télécharger</button>
+              </form>
+            </div>
+          </section>
+        </main>
+        <footer class="footer"></footer>
+      </div>
+    </body>
+</html>

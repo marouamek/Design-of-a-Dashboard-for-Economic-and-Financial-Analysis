@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <link rel="stylesheet" href="/static/style.css"/>	
+		<script src="/static/script.js" defer></script>
+        <title>Statistique Transport</title>
+	</head>
+    <body data-page="transport">
+        <div class="grid-container">
+        <!-- En-tête avec bouton d'actualisation -->
+        <header class="header">
+            <button class="refresh-btn" onclick="loadData(document.body.dataset.page)">Actualiser</button>
+        </header>
+        <!-- Barre latérale de navigation -->
+        {% include 'aside.html' %}
+        <!-- Contenu principal -->
+        <main class="main">
+        <!-- Conteneur des graphes -->
+            <section class="groupe">
+                <!-- Taux du IPC pour le groupe Transport -->
+                <div class="card " id="card2"> 
+                    <div class="card-header">
+                        <h2>Taux du IPC pour le groupe Transport en 2024</h2>
+                    </div>
+                        <!-- IPC doughnut  -->
+                    <canvas id="IPC_transport_general" data-chart="ipc" height="300" width="500"></canvas>
+                </div>
+                <!-- Taux detailé des sous-groupes du Transport -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Sous-groupes les plus inflationnistes en 2024</h2>
+                    </div>
+                    <div class="detail-grp">
+                        {%for i in range(3)%}
+                            <div class="card detail" >
+                            <p id="label-sous-groupe{{i}}"></p>
+                            <p id="value-sous-groupe{{i}}"></p>
+                        </div>
+                        {%endfor%}
+                    </div>
+                </div>
+                <!-- Section de l'evolution du IPC general -->
+                <section class="card" id="card2">	
+                    <div class="card-header">
+                        <h2>Evolution de l’indice générale du groupe Transport</h2>
+                    </div>
+                    <div class="card-content-chart">
+                        <canvas id="IPCgeneral_transport_evolution" data-chart="ipc" height="300" width="500"></canvas>
+                    </div>	
+                </section>
+                <!-- Section de la variation annuelle du IPC -->
+                <section class="card" id="card3">	
+                    <!-- Titre de la section -->
+                    <div class="card-header">
+                        <h2>Evolution de la variation annuelle du IPC</h2>
+                    </div>
+                    <div class="card-content-chart">
+                        <canvas id="Var_transport_chart" data-chart="var" height="300" width="500"></canvas>
+                    </div>
+                </section>
+            </section>
+            <!-- Slider pour les sous-groupes -->
+            <div class="slider-wrapper ">
+                <button class="nav-btn prev" onclick="moveSlider(-1)">&#10094;</button> <!-- Bouton précédent -->
+                <div class="slider-container" id="mainSlider">
+                    <section class="groupe slider">
+                        <div class="card" id="card1">
+                            <div class="card-header">
+                                <h2>Véhicules (achat et dépenses liées)</h2>
+                                <div class="toggle-group">
+                                    <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('transport', 12 , 12)">IPC</button>
+                                    <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('transport', 12 , 12)">VAR</button>
+                                </div>
+                            </div>
+                            <div class="card-content-chart">
+                                <canvas id="ChartVehicules" height="300" width="500"></canvas>
+                            </div>
+                        </div>
+                        <div class="card" id="card2">
+                            <div class="card-header">
+                                <h2>Entretien des véhicules</h2>
+                                <div class="toggle-group">
+                                    <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('transport', 13 , 13)">IPC</button>
+                                    <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('transport', 13 , 13)">VAR</button>
+                                </div>
+                            </div>
+                            <div class="card-content-chart">
+                                <canvas id="ChartEntretienVehicules" height="300" width="500"></canvas>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="groupe slider">
+                        <div class="card" id="card3">
+                            <div class="card-header">
+                                <h2>Carburants et lubrifiants</h2>
+                                <div class="toggle-group">
+                                    <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('transport', 14 , 14)">IPC</button>
+                                    <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('transport', 14 , 14)">VAR</button>
+                                </div>
+                            </div>
+                            <div class="card-content-chart">
+                                <canvas id="ChartTransportsPublics" height="300" width="500"></canvas>
+                            </div>
+                        </div>
+                        <div class="card" id="card4">
+                            <div class="card-header">
+                                <h2>Télécommunications</h2>
+                                <div class="toggle-group">
+                                    <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('transport', 15 , 15)">IPC</button>
+                                    <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('transport', 15 , 15)">VAR</button>
+                                </div>
+                            </div>
+                            <div class="card-content-chart">
+                                <canvas id="ChartTelecommunications" height="300" width="500"></canvas>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <button class="nav-btn next" onclick="moveSlider(1)">&#10095;</button> <!-- Bouton suivant -->
+            </div>
+        </main>
+        <footer class="footer"></footer>
+    </body>
+</html>

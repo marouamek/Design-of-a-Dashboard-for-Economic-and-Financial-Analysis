@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <link rel="stylesheet" href="/static/style.css"/>    
+        <script src="/static/script.js" defer></script>
+        <title>Statistique Logement</title>
+    </head>
+    <body data-page="logement">
+        <div class="grid-container">
+            <!-- En-tête avec bouton d'actualisation -->
+            <header class="header">
+                <button class="refresh-btn" onclick="loadData(document.body.dataset.page)">Actualiser</button>
+            </header>
+            <!-- Barre latérale de navigation incluse depuis un fichier séparé -->
+            {% include 'aside.html' %}
+            <!-- Contenu principal -->
+            <main class="main">
+                <!-- Conteneur des graphes -->
+                <section class="groupe">
+                    <!-- Carte pour le taux global de IPC logement -->
+                    <div class="card " id="card2"> 
+                        <div class="card-header">
+                            <h2>Taux du IPC pour le groupe Logement en 2024</h2>
+                        </div>
+                        <!-- Graphique en doughnut pour les IPC logement -->
+                        <canvas id="IPC_logement_general" data-chart="ipc" height="300" width="500"></canvas>
+                    </div>
+                    <!-- Carte pour les sous-groupes les plus inflationnistes -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Sous-groupes les plus inflationnistes en 2024</h2>
+                        </div>
+                        <!-- Détails des sous-groupes affichés dynamiquement -->
+                        <div class="detail-grp">
+                            {% for i in range(3) %}
+                            <div class="card detail">
+                                <p id="label-sous-groupe{{i}}"></p>
+                                <p id="value-sous-groupe{{i}}"></p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Section pour l'évolution de l'IPC général -->
+                    <section class="card" id="card2">    
+                        <div class="card-header">
+                            <h2>Evolution de l’indice générale du groupe Logement</h2>
+                        </div>
+                        <div class="card-content-chart">
+                            <canvas id="IPCgeneral_logement_evolution" data-chart="ipc" height="300" width="500"></canvas>
+                        </div>    
+                    </section>
+                    <!-- Section pour la variation annuelle de l'IPC -->
+                    <section class="card" id="card3">    
+                        <div class="card-header">
+                            <h2>Evolution de la variation annuelle du IPC</h2>
+                        </div>
+                        <div class="card-content-chart">
+                            <canvas id="Var_logement_chart" data-chart="var" height="300" width="500"></canvas>
+                        </div>
+                    </section>
+                </section>
+                <!-- Slider pour afficher différentes catégories -->
+                <div class="slider-wrapper">
+                    <!-- Bouton pour naviguer vers la section précédente -->
+                    <button class="nav-btn prev" onclick="moveSlider(-1)">&#10094;</button>
+                    <div class="slider-container" id="mainSlider">
+                        <!-- Première section du slider -->
+                        <section class="groupe slider">
+                            <!-- Carte pour l'énergie -->
+                            <div class="card" id="card4">
+                                <div class="card-header">
+                                    <h2>Énergie</h2>
+                                    <div class="toggle-group">
+                                        <!-- Boutons pour basculer entre IPC et VAR -->
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('logement', 6 , 6)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('logement', 6 , 6)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartEnergie" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                            <!-- Carte pour l'eau -->
+                            <div class="card" id="card6">
+                                <div class="card-header">
+                                    <h2>Eau</h2>
+                                    <div class="toggle-group">
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('logement', 7 , 7)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('logement', 7 , 7)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartEau" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                        </section>
+                        <!-- Deuxième section du slider -->
+                        <section class="groupe slider">
+                            <!-- Carte pour le logement et l'entretien -->
+                            <div class="card" id="card4">
+                                <div class="card-header">
+                                    <h2>Logement et Entretien</h2>
+                                    <div class="toggle-group">
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('logement', 8 , 8)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('logement', 8 , 8)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartLogement" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!-- Bouton pour naviguer vers la section suivante -->
+                    <button class="nav-btn next" onclick="moveSlider(1)">&#10095;</button>
+                </div>
+            </main>
+            <footer class="footer"></footer>
+        </div>
+    </body>
+</html>

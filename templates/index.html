@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <link rel="stylesheet" href="/static/style.css"/>
+        <script src="/static/script.js" defer></script>
+        <title>Statistique IPC</title>
+    </head>
+    <body data-page="home">
+        <div class="grid-container">
+            <header class="header">
+                <button class="refresh-btn" onclick="loadData(document.body.dataset.page)">Actualiser</button>
+            </header>
+            {% include 'aside.html' %}
+            <main class="main">
+                <section class="card" id="card1">
+                    <div class="card-header">
+					    <h2>Statistique générale de IPC</h2>
+				    </div>
+                    <!-- 4 cartes generales -->
+                    <div class="card-content" id="cardTable">
+                        <!-- Carte 01 represente l'année la plus inflationniste  -->
+                        <div class="card" id="stat1">
+                            <p class="statLabel">L’année la plus inflationniste</p>
+                            <p class="statPop"></p>
+                        </div>
+                        <!-- Carte 02 represente les groupes de produits qui contribuent le plus à la hausse globale de l’indice -->
+                        <div class="card" id="stat2">
+                            <p class="statLabel">Groupes de produits contribuent le plus à la hausse globale de l’indice</p>
+                            <p class="statPop"></p>
+                        </div>
+                        <!-- Carte 03 represente la saisonnalité marquée dans les prix -->
+                        <div class="card" id="stat3">
+                            <p class="statLabel">Sous Groupes de produits le plus inflationniste</p>
+                            <p class="statPop"></p>
+                        </div>
+                        <!-- Carte 04 represente la variation annuelle de l’IPC en 2024 -->
+                        <div class="card" id="stat4">
+                            <p class="statLabel">Variation annuelle de l’IPC en 2024</p>
+                            <p class="statPop"></p>
+                        </div>				
+				    </div>
+                </section>
+                <!-- Conteneur des graphes -->
+                <div class="charts-container">
+                    <!-- Section de l'evolution du IPC general -->
+                    <section class="card" id="card2">	
+                       <!-- Titre de la section --> 
+                        <div class="card-header">
+                            <h2>Evolution de l’indice générale</h2>
+                        </div>
+                        <!-- Graphe bar -->
+                        <div class="card-content">
+                            <canvas id="IPCgeneralChart" height="300" width="500"></canvas>
+                        </div>	
+                    </section>
+                    <!-- Section de la variation annuelle du IPC -->
+                    <section class="card" id="card3">	
+                        <!-- Titre de la section -->
+                        <div class="card-header">
+                            <h2>Evolution de la variation annuelle du IPC</h2>
+                        </div>
+                        <!-- Graphe ligne -->
+                        <div class="card-content">
+                            <canvas id="VarChart" height="300" width="500"></canvas>
+                        </div>	
+                    </section>
+                    <!-- Section de l'evolution du IPC general en 2024 -->
+                    <section class="card" id="card4">	
+                        <!-- Titre de la section -->
+                        <div class="card-header">
+                            <h2>Evolution de l’indice générale en 2024</h2>
+                        </div>
+                        <!-- Graphe ligne -->
+                        <div class="card-content">
+                            <canvas id="IPCgeneralChart2024" height="300" width="500"></canvas>
+                        </div>	
+                    </section>
+                    <!-- Section de l'evolution par groupe -->
+                    <section class="card" id="card5">
+                        <!-- Titre de la section -->
+                        <div class="card-header">
+                            <h2>Evolution de l’indice générale par groupe</h2>
+                        </div>
+                        <!-- Graphe camambert -->
+                        <div class="filter-group">
+                            <label for="anneeSelect">Année :</label>
+                            <select id="anneeSelect"></select>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="GroupeChart" height="300" width="500"></canvas>
+                        </div>
+                    </section>
+                </div>
+            </main>
+            <footer class="footer"></footer>
+        </div>
+    </body>
+</html>

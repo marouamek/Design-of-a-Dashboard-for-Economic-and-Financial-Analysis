@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">    
+    <head>
+        <meta charset="UTF-8">
+        <!-- Meta tag pour rendre la page responsive -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <!-- Inclusion de la bibliothèque Chart.js pour les graphiques -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <link rel="stylesheet" href="/static/style.css"/>    
+        <script src="/static/script.js" defer></script>
+        <!-- Titre de la page -->
+        <title>Statistique Santé</title>
+    </head>
+    <body data-page="sante">
+        <div class="grid-container">
+            <!-- En-tête avec bouton d'actualisation -->
+            <header class="header">
+                <button class="refresh-btn" onclick="loadData(document.body.dataset.page)">Actualiser</button>
+            </header>
+            <!-- Barre latérale de navigation incluse depuis un fichier séparé -->
+            {% include 'aside.html' %}
+            <!-- Contenu principal -->
+            <main class="main">
+                <!-- Conteneur des graphes -->
+                <section class="groupe">
+                    <!-- Carte pour le taux global de IPC sante -->
+                    <div class="card " id="card2"> 
+                        <div class="card-header">
+                            <h2>Taux du IPC pour le groupe Santé en 2024</h2>
+                        </div>
+                        <!-- Graphique en doughnut pour les IPC sante -->
+                        <canvas id="IPC_sante_general" data-chart="ipc" height="300" width="500"></canvas>
+                    </div>                  
+                    <!-- Carte pour le taux détaillé des IPC sante -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Sous-groupes les plus inflationnistes en 2024</h2>
+                        </div>
+                        <!-- Détails des sous-groupes affichés dynamiquement -->
+                        <div class="detail-grp">
+                            {% for i in range(3) %}
+                            <div class="card detail">
+                                <p id="label-sous-groupe{{i}}"></p>
+                                <p id="value-sous-groupe{{i}}"></p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Section pour l'évolution de l'IPC général -->
+                    <section class="card" id="card2">    
+                        <div class="card-header">
+                            <h2>Evolution de l’indice générale du groupe Santé</h2>
+                        </div>
+                        <div class="card-content-chart">
+                            <canvas id="IPCgeneral_sante_evolution" data-chart="ipc" height="300" width="500"></canvas>
+                        </div>    
+                    </section>
+                    <!-- Section pour la variation annuelle de l'IPC -->
+                    <section class="card" id="card3">    
+                        <div class="card-header">
+                            <h2>Evolution de la variation annuelle du IPC</h2>
+                        </div>
+                        <div class="card-content-chart">
+                            <canvas id="Var_sante_chart" data-chart="var" height="300" width="500"></canvas>
+                        </div>    
+                    </section>
+                </section>
+                <!-- Slider pour afficher différentes catégories -->
+                <div class="slider-wrapper">
+                    <!-- Bouton pour naviguer vers la section précédente -->
+                    <button class="nav-btn prev" onclick="moveSlider(-1)">&#10094;</button>
+                    <div class="slider-container" id="mainSlider">
+                        <!-- Première section du slider -->
+                        <section class="groupe slider">
+                            <!-- Carte pour les médicaments -->
+                            <div class="card" id="card4">
+                                <div class="card-header">
+                                    <h2>Médicament</h2>
+                                    <div class="toggle-group">
+                                        <!-- Boutons pour basculer entre IPC et VAR -->
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('sante', 9 , 9)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('sante', 9 , 9)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartMedicament" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                            <!-- Carte pour les soins médicaux -->
+                            <div class="card" id="card6">
+                                <div class="card-header">
+                                    <h2>Soins Médicaux</h2>
+                                    <div class="toggle-group">
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('sante', 10 , 10)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('sante', 10 , 10)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartSoinsMed" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                        </section>
+                        <!-- Deuxième section du slider -->
+                        <section class="groupe slider">
+                            <!-- Carte pour les cosmétiques et produits parapharmaceutiques -->
+                            <div class="card" id="card4">
+                                <div class="card-header">
+                                    <h2>Cosmétiques et Produits Parapharmaceutiques</h2>
+                                    <div class=" toggle-group">
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('sante', 11 , 11)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('sante', 11 , 11)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartCosmetiques" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!-- Bouton pour naviguer vers la section suivante -->
+                    <button class="nav-btn next" onclick="moveSlider(1)">&#10095;</button>
+                </div>
+            </main>
+            <footer class="footer"></footer>
+        </div>
+    </body>
+</html>

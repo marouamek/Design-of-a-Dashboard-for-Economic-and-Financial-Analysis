@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <!-- Inclusion de la bibliothèque Chart.js pour les graphiques -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <link rel="stylesheet" href="/static/style.css"/>    
+        <script src="/static/script.js" defer></script>
+        <!-- Titre de la page -->
+        <title>Statistique Alimentation</title>
+    </head>
+    <body data-page="alimentation">
+        <div class="grid-container">
+            <!-- En-tête avec bouton d'actualisation -->
+            <header class="header">
+                <button class="refresh-btn" onclick="loadData(document.body.dataset.page)">Actualiser</button>
+            </header>
+            <!-- Barre latérale de navigation incluse depuis un fichier séparé -->
+            {% include 'aside.html' %}
+            <!-- Contenu principal -->
+            <main class="main">
+                <!-- Conteneur des graphes -->
+                <section class="groupe">
+                    <!-- Carte pour le taux global de IPC alimentation -->
+                    <div class="card " id="card2"> 
+                        <div class="card-header">
+                            <h2>Taux du IPC pour le groupe Alimentation en 2024</h2>
+                        </div>
+                        <!-- Graphique en doughnut pour les IPC alimentation -->
+                        <canvas id="IPC_alimentation_general" data-chart="ipc" height="300" width="500"></canvas>
+                    </div>
+
+                    <!-- Carte pour les sous-groupes les plus inflationnistes -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Sous-groupes les plus inflationnistes en 2024</h2>
+                        </div>
+                        <!-- Détails des sous-groupes affichés dynamiquement -->
+                        <div class="detail-grp">
+                            {% for i in range(3) %}
+                            <div class="card detail">
+                                <p id="label-sous-groupe{{i}}"></p>
+                                <p id="value-sous-groupe{{i}}"></p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Section pour l'évolution de l'IPC général -->
+                    <section class="card" id="card2">    
+                        <div class="card-header">
+                            <h2>Evolution de l’indice générale du groupe Alimentation</h2>
+                        </div>
+                        <div class="card-content-chart">
+                            <canvas id="IPCgeneral_alimentation_evolution" data-chart="ipc" height="300" width="500"></canvas>
+                        </div>    
+                    </section>
+                    
+                    <!-- Section pour la variation annuelle de l'IPC -->
+                    <section class="card" id="card3">    
+                        <div class="card-header">
+                            <h2>Evolution de la variation annuelle du IPC</h2>
+                        </div>
+                        <div class="card-content-chart">
+                            <canvas id="Var_alimentation_chart" height="300" width="500"></canvas>
+                        </div>    
+                    </section>
+                </section>
+                
+                <!-- Slider pour afficher différentes catégories -->
+                <div class="slider-wrapper">
+                    <!-- Bouton pour naviguer vers la section précédente -->
+                    <button class="nav-btn prev" onclick="moveSlider(-1)">&#10094;</button>
+                    <div class="slider-container" id="mainSlider">
+                        <!-- Première section du slider -->
+                        <section class="groupe slider">
+                            <!-- Carte pour les produits céréaliers et sucrés -->
+                            <div class="card" id="card4">
+                                <div class="card-header">
+                                    <h2>Produits céréaliers et sucrés</h2>
+                                    <div class="toggle-group">
+                                        <!-- Boutons pour basculer entre IPC et VAR -->
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('alimentation', 0 , 0)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('alimentation', 0 , 0)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartCereales" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                            <!-- Carte pour les produits carnés et protéines -->
+                            <div class="card" id="card6">
+                                <div class="card-header">
+                                    <h2>Produits carnés et protéines</h2>
+                                    <div class="toggle-group">
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('alimentation', 1 , 1)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('alimentation', 1 , 1)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartViandes" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Deuxième section du slider -->
+                        <section class="groupe slider">
+                            <!-- Carte pour les produits agricoles frais -->
+                            <div class="card" id="card7">
+                                <div class="card-header">
+                                    <h2>Produits agricoles frais</h2>
+                                    <div class="toggle-group">
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('alimentation', 2 , 2)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('alimentation', 2 , 2)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartLegumesFruits" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                            <!-- Carte pour les produits laitiers et graisses -->
+                            <div class="card" id="card8">
+                                <div class="card-header">
+                                    <h2>Produits laitiers et graisses</h2>
+                                    <div class="toggle-group">
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('alimentation', 3 , 3)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('alimentation', 3 , 3)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartHuilesLait" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Troisième section du slider -->
+                        <section class="groupe slider">
+                            <!-- Carte pour les boissons -->
+                            <div class="card" id="card5">
+                                <div class="card-header">
+                                    <h2>Boissons</h2>
+                                    <div class="toggle-group">
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('alimentation', 4 , 4)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('alimentation', 4 , 4)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartBoissons" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                            <!-- Carte pour les autres produits alimentaires -->
+                            <div class="card" id="card9">
+                                <div class="card-header">
+                                    <h2>Autres produits alimentaires</h2>
+                                    <div class="toggle-group">
+                                        <button class="toggle-btn-var" data-type="ipc" onclick="loadDetailsIPC('alimentation', 5 , 5)">IPC</button>
+                                        <button class="toggle-btn-var" data-type="var" onclick="loadDetailsVar('alimentation', 5 , 5)">VAR</button>
+                                    </div>
+                                </div>
+                                <div class="card-content-chart">
+                                    <canvas id="ChartAutresAliments" height="300" width="500"></canvas>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!-- Bouton pour naviguer vers la section suivante -->
+                    <button class="nav-btn next" onclick="moveSlider(1)">&#10095;</button>
+                </div>
+            </main>
+            <!-- Pied de page -->
+            <footer class="footer"></footer>
+        </div>
+    </body>
+</html>
