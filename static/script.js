@@ -532,10 +532,9 @@ function update_Donut(idGraph, jsonData) {
         options: {
             responsive: false,
             maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
+            legend: {
+                display: true,
+                position: 'right'
             }
         }
     });

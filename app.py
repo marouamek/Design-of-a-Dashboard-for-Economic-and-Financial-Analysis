@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, make_response
 # On importe le module "flaskext.mysql"
 from flaskext.mysql import MySQL
-from flask import jsonify , json
+from flask import jsonify, json
 from flask import Response
 import openpyxl
 from io import BytesIO
@@ -21,33 +21,43 @@ app.config["MYSQL_DATABASE_DB"] = 'db_ipc'
 # on initialise le connecteur MySQL avec les parametres de connexion
 mysql.init_app(app)
 
-#*********************************** Definition des routes d'affichage des templates ***********************************
+# *********************************** Definition des routes d'affichage des templates ***********************************
 # Route pour la page d'accueil
+
+
 @app.route("/")
 def index():
     # Rendre le template index.html
-    return render_template("index.html")  
+    return render_template("index.html")
 
 # Route pour la page alimentation
+
+
 @app.route("/alimentation")
 def alimentation():
-    return render_template("alimentation.html") # Rendre le template alimentation.html
+    # Rendre le template alimentation.html
+    return render_template("alimentation.html")
+
 
 @app.route("/sante")
 def sante():
     return render_template("sante.html")  # Rendre le template sante.html
 
+
 @app.route("/logement")
 def logement():
     return render_template("logement.html")  # Rendre le template logement.html
 
+
 @app.route("/transport")
 def transport():
-    return render_template("transport.html")  # Rendre le template transport.html
+    # Rendre le template transport.html
+    return render_template("transport.html")
+
 
 @app.route("/export")
 def export_page():
-    return render_template("export.html") # Rendre le template export.html
+    return render_template("export.html")  # Rendre le template export.html
 
 
 # *********************************** Definition des routes de la page d'accueil ***********************************
@@ -57,7 +67,7 @@ def selectCardsData():
     # Connexion a la base de donnees
     conn = mysql.connect()
     cur = conn.cursor()
-    
+
     # 1) Année la plus inflationniste (max variation_pourcentage dans evolution_globale)
     cur.execute("""
         SELECT annee
@@ -67,7 +77,7 @@ def selectCardsData():
     """)
     row = cur.fetchone()
     annee_plus_infl = row[0] if row else None
-    
+
     # 2) Groupe qui contribue le plus à la hausse en 2024 (on garde le calcul détaillé)
     cur.execute("""
         SELECT g.label_grp, SUM(f.variation) AS contrib
@@ -113,16 +123,18 @@ def selectCardsData():
         saisonnalite,
         float(var_ipc_2024)
     ]
-    
+
     # Retourner les données sous forme de JSON
     return make_response(jsonify(data), 200)
 
 # Definition des routes de la page d'accueil - Graphiques IPC general
+
+
 @app.route('/api/ipcGeneral', methods=['GET'])
 def selectIpcGeneral():
     # Connexion a la base de donnees
-    conn = mysql.connect()  
-    cur = conn.cursor()  
+    conn = mysql.connect()
+    cur = conn.cursor()
 
     cur.execute("""
         SELECT annee, indice_general
@@ -130,10 +142,10 @@ def selectIpcGeneral():
         ORDER BY annee;
     """)
 
-    rows = cur.fetchall() 
+    rows = cur.fetchall()
     cur.close()
     conn.close()
-    
+
     labels = [row[0] for row in rows]
     values = [float(row[1]) for row in rows]
 
@@ -142,17 +154,19 @@ def selectIpcGeneral():
         "labels": labels,
         "data": values
     }
-    
+
     # Retourner les données sous forme de JSON
     return make_response(jsonify(data), 200)
 
 # Definition des routes de la page d'accueil - Graphiques Variation IPC general
+
+
 @app.route('/api/varIpcGeneral', methods=['GET'])
 def selectVarIpcGeneral():
     # Connexion a la base de donnees
     conn = mysql.connect()
     cur = conn.cursor()
-    
+
     cur.execute("""
         SELECT annee, variation_pourcentage
         FROM evolution_globale
@@ -162,7 +176,7 @@ def selectVarIpcGeneral():
     rows = cur.fetchall()
     cur.close()
     conn.close()
-    
+
     labels = [row[0] for row in rows]
     values = [float(row[1]) for row in rows]
 
@@ -171,11 +185,13 @@ def selectVarIpcGeneral():
         "labels": labels,
         "data": values
     }
-    
+
     # Retourner les données sous forme de JSON
     return make_response(jsonify(data), 200)
 
 # Definition des routes de la page d'accueil - Graphiques IPC general 2024 mensuel
+
+
 @app.route('/api/ipcGeneral2024', methods=['GET'])
 def selectIpcGeneral2024():
     conn = mysql.connect()
@@ -184,7 +200,7 @@ def selectIpcGeneral2024():
     # Sélection des données de 2024 uniquement
     cur.execute("""
         SELECT Mois, IndiceGeneral 
-        FROM IndiceAlimentaire
+        FROM IndiceMois2024
         ORDER BY FIELD(Mois, 'Janv','Févr','Mars','Avril','Mai','Juin',
         'Juillet','Août','Sept','Oct','Nov','Déc');
     """)
@@ -204,6 +220,8 @@ def selectIpcGeneral2024():
     return make_response(jsonify(data), 200)
 
 # Definition des routes de la page d'accueil - Graphiques IPC par groupe
+
+
 @app.route('/api/ipcParGroupe', methods=['GET'])
 def selectIpcParGroupe():
     # Connexion a la base de donnees
@@ -240,7 +258,6 @@ def selectIpcParGroupe():
     """)
 
     rows = cur.fetchall()
-   
 
     cur.close()
     conn.close()
@@ -277,6 +294,7 @@ def selectIpcParGroupe():
 
 # *********************************** Definition des routes des pages des groupes ***********************************
 
+
 # Mapping des noms de pages aux labels de groupes dans la base de donnees
 group_map = {
     "alimentation": "alimentation",
@@ -299,7 +317,7 @@ sous_groupe_map = {
         "volaille, lapin et oeuf",
         "poisson frais",
         "viandes et poissons en conserve",
-        
+
     ],
 
     "ChartLegumesFruits": [
@@ -345,7 +363,7 @@ sous_groupe_map = {
 
     "ChartSoinsMed": [
         "appareils et materiels therapeutiques",
-        "soins et services medicaux", 
+        "soins et services medicaux",
     ],
 
     "ChartCosmetiques": [
@@ -371,6 +389,8 @@ sous_groupe_map = {
 }
 
 # Definition des routes de la page d'un groupe - Graphiques IPC Donut
+
+
 @app.route('/api/ipcDonut/<string:page>', methods=['GET'])
 def selectIpcDonut(page):
     # Connexion a la base de donnees
@@ -416,6 +436,8 @@ def selectIpcDonut(page):
     return make_response(jsonify(result), 200)
 
 # Definition des routes de la page d'un groupe - Graphiques 3 sous-groupes les plus inflationnistes
+
+
 @app.route('/api/top3Inflation/<string:page>', methods=['GET'])
 def selectTop3Inflation(page):
     # Connexion a la base de donnees
@@ -449,6 +471,8 @@ def selectTop3Inflation(page):
     return make_response(jsonify(result), 200)
 
 # Definition des routes de la page d'un groupe - Graphiques IPC par annee
+
+
 @app.route('/api/ipc/<string:page>/', methods=['GET'])
 def selectIpc(page):
     conn = mysql.connect()
@@ -488,6 +512,8 @@ def selectIpc(page):
     return make_response(jsonify(data), 200)
 
 # Definition des routes de la page d'un groupe - Graphiques Variation IPC par annee
+
+
 @app.route('/api/var/<string:page>/', methods=['GET'])
 def selectVar(page):
     conn = mysql.connect()
@@ -521,16 +547,18 @@ def selectVar(page):
     return make_response(jsonify(data), 200)
 
 # Definition des routes de la page d'un groupe - Graphiques IPC Details sous-groupes
+
+
 @app.route('/api/ipcDetails/<string:page>/<string:id_graph>', methods=['GET'])
 def selectIpcDetails(page, id_graph):
     conn = mysql.connect()
     cur = conn.cursor()
-    
-    label_sous_grps = sous_groupe_map.get(id_graph, None) 
-    
+
+    label_sous_grps = sous_groupe_map.get(id_graph, None)
+
     if label_sous_grps is None:
         return make_response(jsonify({"error": "Invalid graph ID"}), 400)
-    
+
     # Créer les placeholders SQL dynamiquement
     placeholders = ','.join(['%s'] * len(label_sous_grps))
     query = f"""
@@ -547,39 +575,40 @@ def selectIpcDetails(page, id_graph):
       AND a.annee BETWEEN 2015 AND 2024
     ORDER BY a.annee;
     """
-    
+
     cur.execute(query, tuple(label_sous_grps))
-    
+
     rows = cur.fetchall()
     cur.close()
     conn.close()
-    
+
     # Organiser les données par sous-groupe
     data_by_sous_groupe = {}
     all_years = set()
-    
+
     for row in rows:
         annee = row[0]
         sous_grp = row[1]
         value = float(row[2])
         all_years.add(annee)
-        
+
         if sous_grp not in data_by_sous_groupe:
             data_by_sous_groupe[sous_grp] = {}
         data_by_sous_groupe[sous_grp][annee] = value
-    
+
     # Créer les datasets pour Chart.js
     all_years = sorted(list(all_years))
     datasets = []
-    
+
     for sous_grp in label_sous_grps:
         if sous_grp in data_by_sous_groupe:
-            values = [data_by_sous_groupe[sous_grp].get(year, 0) for year in all_years]
+            values = [data_by_sous_groupe[sous_grp].get(
+                year, 0) for year in all_years]
             datasets.append({
                 "label": sous_grp,
                 "data": values
             })
-    
+
     data = {
         "labels": all_years,
         "datasets": datasets
@@ -587,16 +616,19 @@ def selectIpcDetails(page, id_graph):
     return make_response(jsonify(data), 200)
 
 # Definition des routes de la page d'un groupe - Graphiques Variation IPC Details sous-groupes
-@app.route('/api/varDetails/<string:page>/<string:id_graph>', methods=['GET']) # slide 127 cours AJAX
+
+
+# slide 127 cours AJAX
+@app.route('/api/varDetails/<string:page>/<string:id_graph>', methods=['GET'])
 def selectVarDetails(page, id_graph):
     conn = mysql.connect()
     cur = conn.cursor()
-    
-    label_sous_grps = sous_groupe_map.get(id_graph, None) 
-    
+
+    label_sous_grps = sous_groupe_map.get(id_graph, None)
+
     if label_sous_grps is None:
         return make_response(jsonify({"error": "Invalid graph ID"}), 400)
-    
+
     # Créer les placeholders SQL dynamiquement
     placeholders = ','.join(['%s'] * len(label_sous_grps))
     query = f"""
@@ -613,49 +645,52 @@ def selectVarDetails(page, id_graph):
       AND a.annee BETWEEN 2015 AND 2024
     ORDER BY a.annee;
     """
-    
+
     cur.execute(query, tuple(label_sous_grps))
-    
+
     rows = cur.fetchall()
     cur.close()
     conn.close()
-    
+
     # Organiser les données par sous-groupe
     data_by_sous_groupe = {}
     all_years = set()
-    
+
     for row in rows:
         annee = row[0]
         sous_grp = row[1]
         value = float(row[2])
         all_years.add(annee)
-        
+
         if sous_grp not in data_by_sous_groupe:
             data_by_sous_groupe[sous_grp] = {}
         data_by_sous_groupe[sous_grp][annee] = value
-    
+
     # Créer les datasets pour Chart.js
     all_years = sorted(list(all_years))
     datasets = []
-    
+
     for sous_grp in label_sous_grps:
         if sous_grp in data_by_sous_groupe:
-            values = [data_by_sous_groupe[sous_grp].get(year, 0) for year in all_years]
+            values = [data_by_sous_groupe[sous_grp].get(
+                year, 0) for year in all_years]
             datasets.append({
                 "label": sous_grp,
                 "data": values
             })
-    
+
     data = {
         "labels": all_years,
         "datasets": datasets
     }
-    print("\n \n Data for", page, id_graph,data)
+    print("\n \n Data for", page, id_graph, data)
     return make_response(jsonify(data), 200)
 
 # *********************************** Definition des routes de la page d'export ***********************************
 
 # Route pour l'export des donnees en CSV
+
+
 @app.route("/api/export_csv", methods=["GET"])
 def export_csv():
     dataset = request.args.get("dataset", "ipc_general")
@@ -689,7 +724,17 @@ def export_csv():
         rows = [(int(r[0]), float(r[1])) for r in db_rows]
 
     elif dataset == "all_dashboard":
-        # ...existing code for all_dashboard...
+        filename_base = "dashboard_detail_2015_2024"
+        header = [
+            "annee",
+            "groupe",
+            "sous_groupe",
+            "ipc",
+            "variation",
+            "poids_groupe",
+            "poids_sous_groupe",
+        ]
+
         cur.execute("""
         SELECT
             a.annee,
@@ -747,7 +792,8 @@ def export_csv():
         return Response(
             output.getvalue(),
             mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            headers={"Content-Disposition": f"attachment; filename={filename_base}.xlsx"}
+            headers={
+                "Content-Disposition": f"attachment; filename={filename_base}.xlsx"}
         )
 
     else:
@@ -761,9 +807,11 @@ def export_csv():
         return Response(
             csv_data,
             mimetype="text/csv",
-            headers={"Content-Disposition": f"attachment; filename={filename_base}.csv"}
+            headers={
+                "Content-Disposition": f"attachment; filename={filename_base}.csv"}
         )
-    
+
+
 # demarrer le serveur Flask
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
