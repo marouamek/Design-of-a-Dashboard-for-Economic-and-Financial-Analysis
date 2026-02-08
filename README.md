@@ -1,186 +1,92 @@
-# 📊 Mini-Projet – Construire un tableau de bord économique & financier (SPA)
+# Building a Web Dashboard for Economic and Financial Analysis
 
-## 🌍 Préambule — Pourquoi ce projet ?
+## Project Overview
+This project is part of an in-depth analysis of Consumer Price Index (CPI) data for the period **2015–2024** in **Algiers**.  
+Its main goal is to provide an **interactive dashboard** and **data export tools** to explore CPI variations by group and sub-group, as well as overall inflation trends.
 
-Les chiffres économiques sont partout : budgets de l’État, inflation, dette, masse monétaire, prix du pétrole…  
-Pourtant, **un chiffre seul ne dit rien**.  
-Ce qui fait la différence, c’est **la capacité à transformer des données brutes en informations compréhensibles**, puis en **insights utiles**.
+The dashboard allows users to analyze economic indicators through dynamic charts and structured insights, making the data more accessible for interpretation and decision-making.
 
-Dans le monde professionnel, cette mission est souvent confiée à des outils comme **Power BI**, **Tableau** ou **Qlik**.  
-Mais lorsqu’il s’agit de **diffuser ces analyses à des utilisateurs finaux** (citoyens, étudiants, décideurs, journalistes…),  
-une **application Web interactive** devient le meilleur support.
+## Course Module
+This project was developed as part of the **Advanced Programming** module.
 
-👉 Ce mini-projet vous propose de **jouer le rôle d’analyste et de développeur**,  
-en construisant **votre propre tableau de bord Web**, à partir de **données économiques réelles**, issues de **sources officielles**.
+The course aims to help students become familiar with modern Web technologies, including:
+- Python programming
+- Multimedia Web development
+- Web services and APIs
 
+## Key Concepts Used
+- **Backend with Flask**
+  - Development of REST APIs to retrieve data from a MySQL database.
+  - Generation of CSV and Excel files for exporting results.
 
+- **Frontend with JavaScript**
+  - Use of Chart.js to display interactive charts (bar charts, line charts, pie charts, donut charts).
+  - Handling user interactions (toggle buttons, sliders, dynamic filters).
 
+- **Jinja Templating**
+  - Integration of Jinja to dynamically generate HTML templates.
+  - Reusability of components (such as the sidebar) to avoid code duplication and ensure consistent structure.
 
----
-![Tableau de bord](assets/Banière.PNG)
+- **Relational Database**
+  - Data modeling using dimensional tables (`Dim_Year`, `Dim_Group`, `Dim_SubGroup`) and a fact table (`Fact_CPI`).
+  - SQL queries for computing variations, contributions, and trends.
 
+- **Data Visualization**
+  - Representation of CPI data through interactive visualizations for better understanding of economic patterns.
 
-## 🧠 Intitulé du mini-projet
+- **Data Export**
+  - Generation of CSV and Excel files to allow offline analysis.
 
-### **Construire un tableau de bord Web pour l’analyse économique et financière**
+## Analytical Questions Addressed
 
----
+### **Synthetic Overview**
+1. What is the most inflationary year in Algiers between 2015 and 2024?
+2. Which group contributed the most to the CPI increase in 2024?
+3. Is there a specific price anomaly related to a particular product in the basket?
+4. What was the annual CPI variation in Algiers in 2024 compared to 2023?
 
-## 🎯 Objectifs pédagogiques
+### **In-Depth Analysis**
+5. How has CPI evolved in Algiers from 2015 to 2024?
+6. Is the inflation rate accelerating or slowing down?
+7. What were the month-to-month price variations during 2024?
+8. How does each group contribute to CPI evolution since 2015?
 
-Ce mini-projet a pour objectif de vous permettre de :
+### **Granular Analysis (Example: Food Group)**
+9. What are the three food sub-groups with the most critical inflation rates in 2024?
+10. How did the food group contribute to the CPI increase in 2024 compared to other groups?
+11. For a given sub-group (e.g., cereals), is the price increase sudden acceleration or a stable trend throughout the year?
 
-- Travailler avec des **données réelles**
-- Comprendre et exploiter une **source de données officielle**
-- Transformer des données économiques en **questions d’analyse**
-- Concevoir un **tableau de bord Web interactif**
-- Mettre en œuvre une **architecture Web moderne (SPA)**
+## What We Learned From This Project
+This project helped us understand that raw data alone is not enough for meaningful analysis.  
+To extract value, data must be cleaned, structured, and interpreted within a proper context.
 
-### Technologies attendues
-- **HTML / CSS**
-- **JavaScript**
-- **HTTP**
-- **Python**
-- **Flask**
-- **AJAX**
-- **Web Services REST**
-- **Bibliothèque de visualisation (Chart.js ou équivalent)**
+We implemented the **ETL process (Extract, Transform, Load)**:
 
----
+- **Extract**: Collecting heterogeneous data from ONS reports.
+- **Transform**: Cleaning the data, calculating monthly and annual variations, and normalizing formats.
+- **Load**: Structuring and storing the data in a star schema (fact and dimension tables) to optimize query performance.
 
-## 📌 Principe général du projet
+## Technical Skills Developed
+- **Backend Development**
+  - Building REST APIs with Flask.
+  - Managing MySQL database connections and optimizing SQL queries.
 
-Le projet se déroule en **plusieurs étapes logiques**, similaires à un cas réel en entreprise.
+- **Frontend Development**
+  - Integrating data visualization libraries such as Chart.js.
+  - Handling user interactions and dynamically updating HTML components.
 
-### 1️⃣ Choix et compréhension des données
-Chaque équipe doit :
-- Identifier une **source de données officielle**
-- Comprendre :
-  - la nature des données
-  - la période couverte
-  - les indicateurs disponibles
-- Justifier le **choix de la source**
+- **Data Analysis**
+  - Designing a data model to answer analytical questions.
+  - Computing variations and contributions from raw CPI data.
 
-### 2️⃣ Formulation des questions d’analyse
-À partir des données choisies, chaque équipe doit définir :
+## Soft Skills Developed
+Beyond technical implementation, this project allowed us to:
 
-👉 **Au minimum 3 questions** (ou plus)  
-👉 Les questions doivent être **liées à l’économie ou aux finances**
-
-#### Exemples de questions possibles :
-- L’Algérie dépense-t-elle plus en 2025 que les années précédentes ?
-- Quelle est l’évolution de l’inflation annuelle ?
-- Comment évolue la masse monétaire ?
-- Quelle est la part des dépenses d’investissement dans le budget ?
-- Quel est l’impact du prix du pétrole sur les recettes publiques ?
-
-⚠️ Chaque graphique du tableau de bord doit **répondre clairement à une question posée**.
-
----
-
-## 📊 Analyses et visualisations attendues
-
-- Les analyses doivent être **variées**
-- Utilisation obligatoire de **plusieurs types de graphiques** :
-  - Courbes
-  - Barres
-  - Camemberts
-  - (autres si pertinent)
-
-👉 **Un graphique = une question = une réponse visuelle claire**
-
----
-
-## 🗂️ Sources de données autorisées
-
-Vous pouvez utiliser **une ou plusieurs** des sources suivantes :
-
-- 📘 Banque d’Algérie – Rapports annuels  
-  https://www.bank-of-algeria.dz/rapports-annuels/
-
-- 📊 ONS – Indice des Prix à la Consommation (IPC)  
-  https://www.ons.dz/spip.php?rubrique26
-
-- 📜 Lois de finances  
-  https://www.mf.gov.dz/index.php/fr/textes-officiels/lois-de-finances/
-
-- 🌍 Autres sources officielles autorisées :
-  - Banque mondiale
-  - Prix officiel du baril du pétrole
-  - Ministère des Finances
-  - Autres organismes publics reconnus
+1. Interpret complex macroeconomic indicators (CPI, year-on-year variation, weights).
+2. Translate real economic concepts into technical data models (from reports to relational databases).
+3. Learn how to present data effectively by choosing the most relevant chart type for decision-making.
+4. Develop critical thinking toward numerical data by detecting anomalies, seasonal effects, and inflation causes.
+5. Gain experience working collaboratively in a multidisciplinary team.
 
 ---
-
-## 🧑‍🤝‍🧑 Travail en équipe & Git
-
-- Le projet se réalise **en équipe**
-- Chaque équipe doit créer un **compte GitHub** portant le nom :
-pravan_2025_team_X
-
-
-👉 Le numéro `X` de chaque équipe est fourni dans:
-https://docs.google.com/spreadsheets/d/1ejF4l5otVQVVAHf9OOmK6-Q5lFBpJpYRPCngaY_Ls5Y/edit?gid=867714338#gid=867714338
-
-### Dépôt Git
-- Chaque équipe doit :
-  - Cloner le dépôt du mini-projet
-  - Travailler avec **le compte de l’équipe**
-  - Pusher régulièrement le code (comment ce qu'on faisait en TP)
-
----
-
-## 📁 Livrables attendus
-
-### 1️⃣ Code source (Git) (ne dépassant pas 20 Mo)
-- Application Web fonctionnelle (SPA)
-- Backend Flask + Web Services
-- Frontend interactif
-- Visualisations de données
-
-### 2️⃣ Fichier README.md (obligatoire)
-À placer à la racine du dépôt, il doit contenir :
-- Le cadre du projet
-- Le module concerné
-- Les noms des étudiants
-- Les concepts clés utilisés
-- Les questions d’analyse posées
-- Ce que vous avez appris à travers ce projet
-
-### 3️⃣ Rapport écrit (2 à 3 pages)
-Le rapport doit expliquer :
-- Le contexte économique choisi
-- Les concepts clés liés aux questions étudiées
-- La motivation derrière chaque question
-- Une brève interprétation des résultats
-
-### 4️⃣ Vidéo de présentation (3 minutes)
-Une courte vidéo expliquant :
-- Le contexte
-- Les questions posées
-- Le tableau de bord
-- Les principaux résultats
-
----
-
-## ⏰ Date limite de remise
-
-📅 **10 janvier 2026**  
-🕛 **à minuit (23h59)**
-
----
-
-## 🚀 Ce que vous allez vraiment apprendre
-
-Au-delà du code, ce projet vous permettra de :
-
-- Lire et comprendre des **documents économiques réels**
-- Poser des **questions pertinentes à partir des données**
-- Relier **économie, analyse et développement Web**
-- Construire une application proche des **standards professionnels**
-- Valoriser un projet **fort** dans votre portfolio
-
----
-
-💡 *Un bon tableau de bord ne montre pas des chiffres.*  
-💡 *Il raconte une histoire, soutenue par les données.*
+This project combines technical and analytical skills to solve real-world challenges related to economic data analysis.
